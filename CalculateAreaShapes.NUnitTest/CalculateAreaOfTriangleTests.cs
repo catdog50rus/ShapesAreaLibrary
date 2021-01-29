@@ -5,7 +5,7 @@ using System;
 namespace CalculateAreaShapes.NUnitTest
 {
     [TestFixture]
-    class CalculateAreaOfTriandulTests
+    class CalculateAreaOfTriangleTests
     {
         /// <summary>
         /// Получить площадь треугольника, результат площадь треугольника
@@ -14,6 +14,7 @@ namespace CalculateAreaShapes.NUnitTest
         /// <param name="radius"></param>
         /// <param name="expArea"></param>
         [TestCase(ShapeType.Triangle, 2, 3, 4)]
+        [TestCase(ShapeType.Triangle, 3, 4, 5)] //Прямоугольный треугольник
         public void CalculateAreaOfTriangle_ShouldReturnArea(ShapeType type, double a, double b, double c)
         {
             var p = (a+b+c)/2;
@@ -26,9 +27,6 @@ namespace CalculateAreaShapes.NUnitTest
             var result = shapes.GetAreaShape(parameters);
 
             Assert.AreEqual(expArea, result);
-
-
-            Assert.Pass();
         }
 
         /// <summary>
