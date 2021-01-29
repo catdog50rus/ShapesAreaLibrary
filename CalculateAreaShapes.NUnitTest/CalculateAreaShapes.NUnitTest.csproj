@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\CalculateAreaShapes.Labrary.csproj" />
+    <ProjectReference Include="..\CalculateAreaShapes.Library\CalculateAreaShapes.Library.csproj" />
   </ItemGroup>
 
 </Project>
