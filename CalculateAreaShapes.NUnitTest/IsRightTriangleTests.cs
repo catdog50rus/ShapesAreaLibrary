@@ -1,4 +1,4 @@
-﻿using CalculateAreaShapes.Labrary;
+﻿using CalculateAreaShapes.Library;
 using NUnit.Framework;
 using System;
 
@@ -7,20 +7,22 @@ namespace CalculateAreaShapes.NUnitTest
     [TestFixture]
     class IsRightTriangleTests
     {
+        private readonly Triangle _triangle;
+
+        public IsRightTriangleTests()
+        {
+            _triangle = new Triangle();
+        }
+
         /// <summary>
         /// Проверить,является ли треугольник прямоугольным, результат TRUE
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="radius"></param>
-        /// <param name="expArea"></param>
-        [TestCase(ShapeType.Triangle, 3, 4, 5)] //Прямоугольный треугольник
-        public void IsRightfTriangle_ShouldReturnTrue(ShapeType type, double a, double b, double c)
+        [TestCase(3, 4, 5)] //Прямоугольный треугольник
+        public void IsRightfTriangle_ShouldReturnTrue(double a, double b, double c)
         {
             double[] parameters = { a, b, c };
 
-            var shapes = new AreaShapes(type);
-
-            var result = shapes.IsRightTriangle(parameters);
+            var result = _triangle.IsRightTriangle(parameters);
 
             Assert.IsTrue(result);
         }
@@ -28,17 +30,12 @@ namespace CalculateAreaShapes.NUnitTest
         /// <summary>
         /// Проверить,является ли треугольник прямоугольным, результат False
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="radius"></param>
-        /// <param name="expArea"></param>
-        [TestCase(ShapeType.Triangle, 2, 3, 4)] //Прямоугольный треугольник
-        public void IsRightfTriangle_ShouldReturnFalse(ShapeType type, double a, double b, double c)
+        [TestCase(2, 3, 4)] //Не прямоугольный треугольник
+        public void IsRightfTriangle_ShouldReturnFalse(double a, double b, double c)
         {
             double[] parameters = { a, b, c };
 
-            var shapes = new AreaShapes(type);
-
-            var result = shapes.IsRightTriangle(parameters);
+            var result = _triangle.IsRightTriangle(parameters);
 
             Assert.IsFalse(result);
         }
@@ -46,14 +43,11 @@ namespace CalculateAreaShapes.NUnitTest
         /// <summary>
         /// Проверить,является ли треугольник прямоугольным, результат Exception
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="radius"></param>
-        /// <param name="expArea"></param>
-        [TestCase(ShapeType.Triangle, 0, 3, 4)]
-        [TestCase(ShapeType.Triangle, 2, -3, 4)]
-        [TestCase(ShapeType.Triangle, null, 3, 4)]
-        [TestCase(ShapeType.Triangle, 2)] //Указано меньше сторон
-        public void IsRightTriangleTriangle_ShouldReturnExcepation(ShapeType type, double a, double b = 0, double c = 0)
+        [TestCase(0, 3, 4)]
+        [TestCase(2, -3, 4)]
+        [TestCase(null, 3, 4)]
+        [TestCase(2)] //Указано меньше сторон
+        public void IsRightTriangleTriangle_ShouldReturnExcepation(double a, double b = 0, double c = 0)
         {
             double[] parameters;
             if (b == 0 && c == 0)//Проверяем с одним аргументом(case4)
@@ -61,9 +55,7 @@ namespace CalculateAreaShapes.NUnitTest
             else
                 parameters = new double[] { a, b, c };
 
-            var shapes = new AreaShapes(type);
-
-            Assert.Throws<ArgumentException>(() => shapes.IsRightTriangle(parameters));
+            Assert.Throws<ArgumentException>(() => _triangle.IsRightTriangle(parameters));
         }
     }
 }
