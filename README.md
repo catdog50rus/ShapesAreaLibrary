@@ -1,31 +1,84 @@
 # ShapesAreaLibrary
-Библиотека для расчета площади фигур
-Для добавления фгур в библиотеку, необходиморасширить список фигур
+Библиотека для расчета площади фигур.
 
-    public enum ShapeType
+На текущий момент реализованы фигуры:
+1. Круг class Circle()
+2. Треугольник class Triangle()
+
+Испьзование библиотеки:
+1. Необходимо создать экземпляр класса нужной фигуры
+   Пример:
+   var circle = new Circle();
+   или
+   Circle circle = new Circle();
+
+2. Для получения площади фигуры у экземпляра вызываем метод GetAreaShape(params double[] sides), в качестве параметра передается массив измерений
+   Пример:
+   var radius = new double[] {5};
+   или
+   var sides = new double[] {3, 4, 5}
+   
+   При этом для расчета площадей нескольких однотипных фигур, не нужно создавать отдельные экземпляры класса, достаточно создать набор массивов параметров.
+   
+
+Расширение библиотеки.
+
+Для добавления фгур в библиотеку, необходиморасширить создать класс, отнаследованный от абстрактного класса Shape
+
+    public class Circle : Shape
     {
-        None,
-        Circle,
-        Triangle
+        public Circle() { }
+
+        ........
     }
 
-И реализовать приватный метод расчета площади
+В классе необходимо переопределить публичный метод расчета площади фигуры в соответствии с правилами геометрии
 
-        private double GetAraOfTriangle(double [] sides)
+        public override double GetAreaShape(params double[] parameters)
         {
-            if (sides.Length != 3)
-                throw new ArgumentException("В треугольнике должно быть указано три стороны");
-            double sideA = sides[0], sideB = sides[1], sideC = sides[2];
-            var p = sides.Sum()/2 ; // (sideA + sideB + sideC) / 2;
-            var area = Math.Sqrt(p * (p - sideA) * (p - sideB) * (p - sideC));
-            return area;
+            ValidateParameters(parameters);
+            //Получаем радиус из параметров
+            var radius = parameters[0];
+            //Возвращаем площадь круга
+            //S = П*R*R
+            return Math.PI * Math.Pow(radius, 2);
         }
         
-В методе GetAreaShape(params double[] parameters)
-добавить соответствующий CASE
+Для валидации входных параметров создае приватный метод, в котором провводим валидацию в два этапа
 
-        case ShapeType.Circle:
-            result = GetAreaOfCircle(parameters);
-            break;
+        private static void ValidateParameters(double[] parameters)
+        {
+            Первый этап первичная валидация (проверки на null, отрицательные и нулевые параметры фигур), проводится в базаовом классе
+            //Первичная валидация входных параметров
+            ValidateInputParameters(parameters);
             
-Для самоконтроля можно добавить UnitTests для тестирования нахождения площади новой фигуры
+            Воторой этап, валидация на колиество параметров. определяющие фигуру (для круга - радиус, для треугольника 3 стороны и т.д.),
+            проводится в самом классе
+            //Валидация количества параметров
+            //У круга только один параметр радиус
+            if (parameters.Length != 1)
+                throw new ArgumentException("У окружности должен быть только один параметр (Радиус)");
+                
+            В случае не прохождения валидации, генерируется исключение ArgumentException с указанием какой параметр не прошел валидацию
+        }
+            
+Весь дополнительный функционал для фигур необходимо реализовывать в класса фигур.
+Пример реализации проверки, является ли треугольник прямоугольным, реализованный в классе Triangle
+
+        /// <summary>
+        /// Проверить является ли треугольник прямоугольным
+        /// </summary>
+        public bool IsRightTriangle(double[] sides)
+        {
+            //Валидация входных параметров
+            ValidateParameters(sides);
+            //Сортируем стороны по возрастанию
+            sides.ToList().Sort();
+            //Получаем стороны треугольника из массива
+            double sideA = sides[0], sideB = sides[1], sideC = sides[2];
+
+            //Проверяем треугольник  по теореме Пифагорана
+            return (Math.Pow(sideC, 2) == Math.Pow(sideA, 2) + Math.Pow(sideB, 2));
+        }
+
+Весь реализованный функционал подвергся UNit тестам
