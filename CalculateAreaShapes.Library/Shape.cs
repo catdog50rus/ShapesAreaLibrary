@@ -4,19 +4,26 @@ namespace CalculateAreaShapes.Library
 {
     public abstract class Shape
     {
+        protected readonly double[] _parameters;
+
+        protected Shape(params double[] parameters)
+        {
+            ValidateInputParameters(parameters);
+            _parameters = parameters;
+        }
+
         /// <summary>
         /// Рассчитать площадь фигуры
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        abstract public double GetAreaShape(params double[] parameters);
+        abstract public double GetAreaShape();
         /// <summary>
         /// Первичная валидация параметров
         /// </summary>
         /// <param name="parameters"></param>
-        protected static void ValidateInputParameters(double[] parameters)
+        protected void ValidateInputParameters(double[] parameters)
         {
-            //Валидация входных параметров
             //Пустой массив
             if (parameters.Length == 0)
                 throw new ArgumentException("Входные параметры пустые");

@@ -7,12 +7,7 @@ namespace CalculateAreaShapes.NUnitTest
     [TestFixture]
     class IsRightTriangleTests
     {
-        private readonly Triangle _triangle;
-
-        public IsRightTriangleTests()
-        {
-            _triangle = new Triangle();
-        }
+        private Triangle _triangle;
 
         /// <summary>
         /// Проверить,является ли треугольник прямоугольным, результат TRUE
@@ -21,8 +16,9 @@ namespace CalculateAreaShapes.NUnitTest
         public void IsRightfTriangle_ShouldReturnTrue(double a, double b, double c)
         {
             double[] parameters = { a, b, c };
+            _triangle = new Triangle(parameters);
 
-            var result = _triangle.IsRightTriangle(parameters);
+            var result = _triangle.IsRightTriangle();
 
             Assert.IsTrue(result);
         }
@@ -34,8 +30,9 @@ namespace CalculateAreaShapes.NUnitTest
         public void IsRightfTriangle_ShouldReturnFalse(double a, double b, double c)
         {
             double[] parameters = { a, b, c };
+            _triangle = new Triangle(parameters);
 
-            var result = _triangle.IsRightTriangle(parameters);
+            var result = _triangle.IsRightTriangle();
 
             Assert.IsFalse(result);
         }
@@ -55,7 +52,7 @@ namespace CalculateAreaShapes.NUnitTest
             else
                 parameters = new double[] { a, b, c };
 
-            Assert.Throws<ArgumentException>(() => _triangle.IsRightTriangle(parameters));
+            Assert.Throws<ArgumentException>(() => _triangle = new Triangle(parameters));
         }
     }
 }

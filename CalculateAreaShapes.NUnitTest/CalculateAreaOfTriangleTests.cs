@@ -7,12 +7,8 @@ namespace CalculateAreaShapes.NUnitTest
     [TestFixture]
     class CalculateAreaOfTriangleTests
     {
-        private readonly Triangle _triangle;
+        private Triangle _triangle;
 
-        public CalculateAreaOfTriangleTests()
-        {
-            _triangle = new Triangle();
-        }
 
         /// <summary>
         /// Получить площадь треугольника, результат площадь треугольника
@@ -25,8 +21,9 @@ namespace CalculateAreaShapes.NUnitTest
             var expArea = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
 
             double[] parameters = { a, b, c };
-            
-            var result = _triangle.GetAreaShape(parameters);
+            _triangle = new Triangle(parameters);
+
+            var result = _triangle.GetAreaShape();
 
             Assert.AreEqual(expArea, result);
         }
@@ -46,7 +43,7 @@ namespace CalculateAreaShapes.NUnitTest
             else
                 parameters = new double[] { a, b, c };
 
-            Assert.Throws<ArgumentException>(() => _triangle.GetAreaShape(parameters));
+            Assert.Throws<ArgumentException>(() => _triangle = new Triangle(parameters));
         }
     }
 }

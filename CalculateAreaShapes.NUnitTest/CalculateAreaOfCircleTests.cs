@@ -8,12 +8,7 @@ namespace CalculateAreaShapes.NUnitTest
     public class CalculateAreaOfCircleTests
     {
         private const double PI = Math.PI;
-        private readonly Circle _circle;
-
-        public CalculateAreaOfCircleTests()
-        {
-            _circle = new Circle();
-        }
+        private Circle _circle;
 
         /// <summary>
         /// Получить площадь круга, результат площадь круга
@@ -22,10 +17,11 @@ namespace CalculateAreaShapes.NUnitTest
         public void CalculateAreaOfCircle_ShouldReturnArea(double radius)
         {
             double expArea = PI * Math.Pow(radius, 2);
+            _circle = new Circle(radius);
 
-            var result = _circle.GetAreaShape(radius);
+            var result = _circle.GetAreaShape();
 
-            Assert.AreEqual(expArea, result, 0.1);
+            Assert.AreEqual(expArea, result);
         }
 
         /// <summary>
@@ -34,17 +30,9 @@ namespace CalculateAreaShapes.NUnitTest
         [TestCase(-2)]
         [TestCase(0)]
         [TestCase(null)]
-        [TestCase(2, 3)] //передаем два параметра вместо одного
-        public void CalculateAreaOfCircle_ShouldReturnExcepation(double radius, double ex = 0)
+        public void CalculateAreaOfCircle_ShouldReturnExcepation(double radius)
         {
-            double[] parameters;
-            if (ex==0)
-                parameters = new double[] { radius };
-            else
-                parameters = new double[] { radius, ex };
-          
-
-            Assert.Throws<ArgumentException>(() => _circle.GetAreaShape(parameters));
+            Assert.Throws<ArgumentException>(() => _circle = new Circle(radius));
         }
     }
 }
